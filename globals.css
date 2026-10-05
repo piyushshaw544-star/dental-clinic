@@ -1,0 +1,193 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* light-blue brand ramp */
+  --color-brand-50: #eff8ff;
+  --color-brand-100: #dceffe;
+  --color-brand-200: #bfe2fd;
+  --color-brand-300: #93d0fc;
+  --color-brand-400: #5fb5f8;
+  --color-brand-500: #3a99f0;
+  --color-brand-600: #2480e4;
+  --color-brand-700: #1c66c8;
+  --color-brand-800: #1d54a2;
+  --color-brand-900: #1d4880;
+
+  /* deep clinical navy for type */
+  --color-ink-900: #0a2340;
+  --color-ink-800: #133152;
+  --color-ink-700: #26476a;
+  --color-ink-600: #456c92;
+  --color-ink-500: #6b87a4;
+  --color-ink-400: #8ba3bb;
+
+  --color-mint-400: #46c9c0;
+  --color-mint-500: #16b1a9;
+  --color-mint-600: #0d928d;
+
+  --color-surface: #f5faff;
+
+  --shadow-soft: 0 2px 8px rgba(13, 61, 112, 0.05),
+    0 12px 32px -12px rgba(13, 61, 112, 0.12);
+  --shadow-lift: 0 4px 14px rgba(13, 61, 112, 0.08),
+    0 24px 48px -20px rgba(13, 61, 112, 0.22);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 92px;
+}
+
+body {
+  background-color: #ffffff;
+  color: var(--color-ink-700);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-brand-200);
+  color: var(--color-ink-900);
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-brand-50);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-200);
+  border-radius: 999px;
+  border: 3px solid var(--color-brand-50);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-300);
+}
+
+/* ─── scroll reveal ─────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── ambient motion ────────────────────────────── */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+.float-slow {
+  animation: float-y 7s ease-in-out infinite;
+}
+.float-slower {
+  animation: float-y 9s ease-in-out infinite;
+}
+
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(26px, -22px) scale(1.07);
+  }
+  66% {
+    transform: translate(-20px, 16px) scale(0.95);
+  }
+}
+.blob {
+  animation: blob-drift 18s ease-in-out infinite;
+  filter: blur(56px);
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: currentColor;
+  animation: pulse-ring 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+/* dotted medical grid */
+.dot-grid {
+  background-image: radial-gradient(
+    circle at center,
+    rgba(36, 128, 228, 0.16) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+/* gentle sheen sweep on primary buttons */
+@keyframes sheen {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(260%) skewX(-18deg);
+  }
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 42px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  animation: sheen 4.5s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .float-slow,
+  .float-slower,
+  .blob,
+  .pulse-ring::before,
+  .sheen::after {
+    animation: none;
+  }
+}
